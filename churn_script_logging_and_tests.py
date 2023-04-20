@@ -24,15 +24,15 @@ def test_import(import_data):
     Test data import
     """
     try:
-        df = import_data("data/bank_data.csv")
+        data = import_data("data/bank_data.csv")
         logging.info("Testing import_data: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing import_eda: The file wasn't found")
         raise err
 
     try:
-        assert df.shape[0] > 0
-        assert df.shape[1] > 0
+        assert data.shape[0] > 0
+        assert data.shape[1] > 0
     except AssertionError as err:
         logging.error(
             "Testing import_data: The file doesn't appear to have rows and columns")
@@ -46,16 +46,16 @@ def test_eda(perform_eda):
 
     # Preprocess
     try:
-        df = cls.import_data("data/bank_data.csv")
-        df['Churn'] = df['Attrition_Flag'].apply(
-                     lambda val: 0 if val == "Existing Customer" else 1)
+        data = cls.import_data("data/bank_data.csv")
+        data['Churn'] = data['Attrition_Flag'].apply(
+            lambda val: 0 if val == "Existing Customer" else 1)
     except Exception as err:
         logging.error("Testing perform_eda: Preprocess data wasn't possible")
         raise err
 
     # Function Execution
     try:
-        perform_eda(df)
+        perform_eda(data)
         logging.info("Testing perform_eda: SUCCESS")
     except Exception as err:
         logging.error("Testing perform_eda: The function wasn't executed")
@@ -90,16 +90,16 @@ def test_encoder_helper(encoder_helper):
 
     # Preprocess
     try:
-        df = cls.import_data("data/bank_data.csv")
-        df['Churn'] = df['Attrition_Flag'].apply(
-                     lambda val: 0 if val == "Existing Customer" else 1)
+        data = cls.import_data("data/bank_data.csv")
+        data['Churn'] = data['Attrition_Flag'].apply(
+            lambda val: 0 if val == "Existing Customer" else 1)
     except Exception as err:
         logging.error("Testing perform_eda: Preprocess data wasn't possible")
         raise err
 
     # Function Execution
     try:
-        data = encoder_helper(df, cat_columns, response)
+        data = encoder_helper(data, cat_columns, response)
         logging.info("Testing encoder_helper: SUCCESS")
     except Exception as err:
         logging.error("Testing encoder_helper: The function wasn't executed")
@@ -121,18 +121,19 @@ def test_perform_feature_engineering(perform_feature_engineering):
     """
     # Preprocess
     try:
-        df = cls.import_data("data/bank_data.csv")
+        data = cls.import_data("data/bank_data.csv")
         response = 'Churn'
-        df[response] = df['Attrition_Flag'].apply(
-                     lambda val: 0 if val == "Existing Customer" else 1)
+        data[response] = data['Attrition_Flag'].apply(
+            lambda val: 0 if val == "Existing Customer" else 1)
     except Exception as err:
-        logging.error("Testing perform_feature_engineering: Preprocess data wasn't possible")
+        logging.error(
+            "Testing perform_feature_engineering: Preprocess data wasn't possible")
         raise err
 
     # Function Execution
     try:
         x_data, x_train, x_test, y_train, y_test = perform_feature_engineering(
-                                                                df, response)
+            data, response)
         logging.info("Testing perform_feature_engineering: SUCCESS")
     except Exception as err:
         logging.error(
@@ -141,16 +142,16 @@ def test_perform_feature_engineering(perform_feature_engineering):
 
     # Return values are not empty and are np.ndarrays
     try:
-        assert type(x_data) == pd.DataFrame
-        assert type(x_train) == pd.DataFrame
-        assert type(x_test) == pd.DataFrame
-        assert type(y_train) == pd.Series
-        assert type(y_test) == pd.Series
+        assert isinstance(x_data, pd.DataFrame)
+        assert isinstance(x_train, pd.DataFrame)
+        assert isinstance(x_test, pd.DataFrame)
+        assert isinstance(y_train, pd.Series)
+        assert isinstance(y_test, pd.Series)
 
     except AssertionError as err:
         logging.error(type(y_train))
         logging.error(
-                    "Testing perform_feature_engineering: Wrong return values")
+            "Testing perform_feature_engineering: Wrong return values")
         raise err
 
 
@@ -161,14 +162,16 @@ def test_train_models(train_models):
 
     # Preprocess
     try:
-        df = cls.import_data("data/bank_data.csv")
+        data = cls.import_data("data/bank_data.csv")
         response = 'Churn'
-        df[response] = df['Attrition_Flag'].apply(
-                     lambda val: 0 if val == "Existing Customer" else 1)
+        data[response] = data['Attrition_Flag'].apply(
+            lambda val: 0 if val == "Existing Customer" else 1)
 
-        x_data, x_train, x_test, y_train, y_test = cls.perform_feature_engineering(df, response)
+        x_data, x_train, x_test, y_train, y_test = cls.perform_feature_engineering(
+            data, response)
     except Exception as err:
-        logging.error("Testing test_train_models: Preprocess data wasn't possible")
+        logging.error(
+            "Testing test_train_models: Preprocess data wasn't possible")
         raise err
 
     # Function Execution
