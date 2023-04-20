@@ -1,6 +1,6 @@
 # Predict Customer Churn
 
-- Project **Predict Customer Churn** for ML DevOps Engineer Nanodegree Udacity
+Project **Predict Customer Churn** for ML DevOps Engineer Nanodegree Udacity
 
 ## Project Description
 
@@ -9,6 +9,7 @@ This project identifies credit card customers that are most likely to churn.
 ## Files and data description
 
 Overview of the files and data present in the root directory.
+```
 .
 ├── Notebooks
 | ├── Guide.ipynb
@@ -27,6 +28,7 @@ Overview of the files and data present in the root directory.
 ├── .gitignore
 ├── requirements.txt
 └── README.md
+```
 
 ## Running Files
 
